@@ -1,65 +1,30 @@
-body {
-  font-family: Arial, sans-serif;
-  text-align: center;
-  background-color: #f0f0f0;
-}
-
-h1 {
-  margin-top: 20px;
-  color: #333;
-}
-
-#game-board {
-  display: grid;
-  grid-template-columns: repeat(4, 100px);
-  grid-gap: 15px;
-  justify-content: center;
-  margin-top: 30px;
-}
+/* style.css */
 
 .card {
-  width: 100px;
-  height: 140px;
-  background-color: #ffffff;
-  border: 2px solid #ccc;
-  border-radius: 8px;
-  cursor: pointer;
-  position: relative;
-  perspective: 1000px;
+    position: relative;
+    width: 100%;
+    padding-top: 100%; /* Square */
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.3s;
 }
 
-.card-inner {
-  width: 100%;
-  height: 100%;
-  transition: transform 0.6s;
-  transform-style: preserve-3d;
-  position: relative;
+.card:hover {
+    transform: scale(1.05);
 }
 
-.card.flipped .card-inner {
-  transform: rotateY(180deg);
+.card img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+    display: none;
 }
 
-.card-front, .card-back {
-  width: 100%;
-  height: 100%;
-  backface-visibility: hidden;
-  position: absolute;
-  top: 0;
-  left: 0;
-  border-radius: 8px;
-}
-
-.card-front {
-  background: #3498db;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-size: 24px;
-}
-
-.card-back {
-  transform: rotateY(180deg);
-  background: #ecf0f1;
+.card.flipped img {
+    display: block;
 }

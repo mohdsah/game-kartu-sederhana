@@ -1,16 +1,41 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Game Kartu</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matching Game</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1e3a8a, #facc15);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        .title {
+            color: white;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+        }
+        .game-board {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 15px;
+            width: 90%;
+            max-width: 600px;
+        }
+    </style>
 </head>
 <body>
+    <h1 class="title">Matching Kartu Game</h1>
+    <div class="game-board" id="game-board"></div>
 
-  <h1>Game Kartu</h1>
-  <div id="game-board"></div>
-
-  <script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>

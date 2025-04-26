@@ -1,64 +1,75 @@
+// script.js
+
 const cardsArray = [
-  { name: 'kartu1', img: 'assets/kartu1.png' },
-  { name: 'kartu2', img: 'assets/kartu2.png' },
-  { name: 'kartu3', img: 'assets/kartu3.png' },
-  { name: 'kartu4', img: 'assets/kartu4.png' },
-  { name: 'kartu5', img: 'assets/kartu5.png' },
-  { name: 'kartu6', img: 'assets/kartu6.png' }
+    'kartu1.png', 'kartu2.jpeg', 'kartu3.png', 'kartu4.png', 'kartu5.jpg', 'kartu6.jpg',
+    'kartu1.png', 'kartu2.jpeg', 'kartu3.png', 'kartu4.png', 'kartu5.jpg', 'kartu6.jpg'
 ];
 
-let gameCards = [...cardsArray, ...cardsArray];
-
-gameCards.sort(() => 0.5 - Math.random());
+// Shuffle cards
+cardsArray.sort(() => 0.5 - Math.random());
 
 const gameBoard = document.getElementById('game-board');
+
 let firstCard = null;
 let secondCard = null;
 let lockBoard = false;
 
-gameCards.forEach(card => {
-  const cardElement = document.createElement('div');
-  cardElement.classList.add('card');
-  
-  cardElement.innerHTML = `
-    <div class="card-inner">
-      <div class="card-front">?</div>
-      <div class="card-back">
-        <img src="${card.img}" alt="${card.name}" style="width: 100%; height: 100%; object-fit: cover;">
-      </div>
-    </div>
-  `;
+// Create cards
+cardsArray.forEach(imgName => {
+    const card = document.createElement('div');
+    card.classList.add('card');
 
-  cardElement.addEventListener('click', () => flipCard(cardElement, card));
-  gameBoard.appendChild(cardElement);
+    const img = document.createElement('img');
+    img.src = `assets/${imgName}`;
+
+    card.appendChild(img);
+    card.addEventListener('click', flipCard);
+
+    gameBoard.appendChild(card);
 });
 
-function flipCard(cardElement, cardData) {
-  if (lockBoard) return;
-  if (cardElement.classList.contains('flipped')) return;
+function flipCard() {
+    if (lockBoard || this.classList.contains('flipped')) return;
 
-  cardElement.classList.add('flipped');
+    this.classList.add('flipped');
 
-  if (!firstCard) {
-    firstCard = { element: cardElement, data: cardData };
-  } else {
-    secondCard = { element: cardElement, data: cardData };
-    checkMatch();
-  }
+    if (!firstCard) {
+        firstCard = this;
+        return;
+    }
+
+    secondCard = this;
+    checkForMatch();
 }
 
-function checkMatch() {
-  if (firstCard.data.name === secondCard.data.name) {
-    firstCard = null;
-    secondCard = null;
-  } else {
+function checkForMatch() {
+    const isMatch = firstCard.querySelector('img').src === secondCard.querySelector('img').src;
+
+    if (isMatch) {
+        disableCards();
+    } else {
+        unflipCards();
+    }
+}
+
+function disableCards() {
+    firstCard.removeEventListener('click', flipCard);
+    secondCard.removeEventListener('click', flipCard);
+
+    resetBoard();
+}
+
+function unflipCards() {
     lockBoard = true;
+
     setTimeout(() => {
-      firstCard.element.classList.remove('flipped');
-      secondCard.element.classList.remove('flipped');
-      firstCard = null;
-      secondCard = null;
-      lockBoard = false;
+        firstCard.classList.remove('flipped');
+        secondCard.classList.remove('flipped');
+
+        resetBoard();
     }, 1000);
-  }
+}
+
+function resetBoard() {
+    [firstCard, secondCard, lockBoard] = [null, null, false];
 }
