@@ -1,15 +1,112 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sederhana Card Game</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sederhana Project v0.03</title>
+  <style>
+    body {
+      margin: 0;
+      background: linear-gradient(to bottom right, #6dd5fa, #ffffff);
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      align-items: center;
+    }
+    .grid {
+      margin-top: 20px;
+      display: grid;
+      grid-template-columns: repeat(3, 100px);
+      grid-gap: 15px;
+    }
+    .card {
+      width: 100px;
+      height: 100px;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      font-weight: bold;
+      cursor: pointer;
+      transform-style: preserve-3d;
+      transition: transform 0.5s;
+      position: relative;
+    }
+    .card.flip {
+      transform: rotateY(180deg);
+    }
+    .card .front, .card .back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .card .back {
+      background: #1e90ff;
+      transform: rotateY(180deg);
+      color: white;
+    }
+    .footer {
+      margin-top: auto;
+      background: black;
+      color: white;
+      width: 100%;
+      text-align: center;
+      padding: 10px 0;
+      font-size: 14px;
+    }
+  </style>
 </head>
-<body>
-    <h1 class="title">Sederhana Card Game</h1>
-    <div class="game-board" id="gameBoard"></div>
-    <footer class="footer">Versi 0.02 - Sederhana Project</footer>
-    <script src="script.js"></script>
-</body>
+<body><div class="grid" id="game-board"></div><div class="footer">
+  Versi 0.03 - Sederhana Project
+</div><script>
+const board = document.getElementById('game-board');
+let cardValues = ['A','A','B','B','C','C','D','D','E','E','F','F'];
+let selectedCards = [];
+
+// Shuffle
+cardValues = cardValues.sort(() => 0.5 - Math.random());
+
+// Create cards
+cardValues.forEach(value => {
+  const card = document.createElement('div');
+  card.classList.add('card');
+  card.innerHTML = `
+    <div class="front"></div>
+    <div class="back">${value}</div>
+  `;
+  board.appendChild(card);
+
+  card.addEventListener('click', () => {
+    if (card.classList.contains('flip')) return;
+    if (selectedCards.length >= 2) return;
+
+    card.classList.add('flip');
+    selectedCards.push(card);
+
+    if (selectedCards.length === 2) {
+      setTimeout(checkMatch, 800);
+    }
+  });
+});
+
+function checkMatch() {
+  const [card1, card2] = selectedCards;
+  if (card1.innerHTML === card2.innerHTML) {
+    card1.style.visibility = 'hidden';
+    card2.style.visibility = 'hidden';
+  } else {
+    card1.classList.remove('flip');
+    card2.classList.remove('flip');
+  }
+  selectedCards = [];
+}
+</script></body>
 </html>
