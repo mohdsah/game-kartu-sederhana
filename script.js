@@ -1,86 +1,29 @@
-const cardImages = [
-  'assets/kartu1.png',
-  'assets/kartu2.png',
-  'assets/kartu3.png',
-  'assets/kartu4.png',
-  'assets/kartu5.png',
-  'assets/kartu6.png'
+const cardContainer = document.getElementById('cardContainer');
+
+const cards = [
+  { title: "Kad 1", desc: "Deskripsi 1", img: "gambar/1.jpg" },
+  { title: "Kad 2", desc: "Deskripsi 2", img: "gambar/2.jpg" },
+  { title: "Kad 3", desc: "Deskripsi 3", img: "gambar/3.jpg" },
+  { title: "Kad 4", desc: "Deskripsi 4", img: "gambar/4.jpg" },
+  { title: "Kad 5", desc: "Deskripsi 5", img: "gambar/5.jpg" },
+  { title: "Kad 6", desc: "Deskripsi 6", img: "gambar/6.jpg" },
+  { title: "Kad 7", desc: "Deskripsi 7", img: "gambar/7.jpg" },
+  { title: "Kad 8", desc: "Deskripsi 8", img: "gambar/8.jpg" },
+  { title: "Kad 9", desc: "Deskripsi 9", img: "gambar/9.jpg" },
+  { title: "Kad 10", desc: "Deskripsi 10", img: "gambar/10.jpg" },
+  { title: "Kad 11", desc: "Deskripsi 11", img: "gambar/11.jpg" },
+  { title: "Kad 12", desc: "Deskripsi 12", img: "gambar/12.jpg" }
 ];
 
-let cards = [];
-let firstCard = null;
-let secondCard = null;
-let lockBoard = false;
-
-function shuffleCards() {
-  cards = [...cardImages, ...cardImages];
-  cards.sort(() => 0.5 - Math.random());
-}
-
-function createBoard() {
-  const board = document.getElementById('game-board');
-  board.innerHTML = '';
-
-  cards.forEach((image, index) => {
-    const card = document.createElement('div');
-    card.classList.add('card');
-    card.dataset.image = image;
-
-    const img = document.createElement('img');
-    img.src = image;
-
-    card.appendChild(img);
-    card.addEventListener('click', flipCard);
-
-    board.appendChild(card);
-  });
-}
-
-function flipCard() {
-  if (lockBoard) return;
-  if (this === firstCard) return;
-
-  this.classList.add('flipped');
-
-  if (!firstCard) {
-    firstCard = this;
-    return;
-  }
-
-  secondCard = this;
-  checkMatch();
-}
-
-function checkMatch() {
-  const isMatch = firstCard.dataset.image === secondCard.dataset.image;
-
-  isMatch ? disableCards() : unflipCards();
-}
-
-function disableCards() {
-  firstCard.removeEventListener('click', flipCard);
-  secondCard.removeEventListener('click', flipCard);
-  resetBoard();
-}
-
-function unflipCards() {
-  lockBoard = true;
-  setTimeout(() => {
-    firstCard.classList.remove('flipped');
-    secondCard.classList.remove('flipped');
-    resetBoard();
-  }, 1000);
-}
-
-function resetBoard() {
-  [firstCard, secondCard, lockBoard] = [null, null, false];
-}
-
-document.getElementById('restart-btn').addEventListener('click', () => {
-  shuffleCards();
-  createBoard();
-  document.getElementById('message').textContent = '';
+cards.forEach(card => {
+  const cardElement = document.createElement('div');
+  cardElement.className = 'card';
+  cardElement.innerHTML = `
+    <img src="${card.img}" alt="${card.title}" onerror="this.onerror=null;this.src='https://via.placeholder.com/300x180';">
+    <div class="card-content">
+      <h3>${card.title}</h3>
+      <p>${card.desc}</p>
+    </div>
+  `;
+  cardContainer.appendChild(cardElement);
 });
-
-shuffleCards();
-createBoard();
