@@ -1,49 +1,44 @@
-// script.js
+const gameBoard = document.getElementById('gameBoard');
 
-const cardsArray = [
-    'kartu1.png', 'kartu2.jpeg', 'kartu3.png', 'kartu4.png', 'kartu5.jpg', 'kartu6.jpg',
-    'kartu1.png', 'kartu2.jpeg', 'kartu3.png', 'kartu4.png', 'kartu5.jpg', 'kartu6.jpg'
+const images = [
+    'assets/kartu1.png',
+    'assets/kartu2.png',
+    'assets/kartu3.png',
+    'assets/kartu4.png',
+    'assets/kartu5.png',
+    'assets/kartu6.png',
+    'assets/kartu7.png'
 ];
 
-// Shuffle cards
-cardsArray.sort(() => 0.5 - Math.random());
-
-const gameBoard = document.getElementById('game-board');
-
-let firstCard = null;
-let secondCard = null;
+let cards = [...images, ...images]; // duplicate untuk matching
+let firstCard, secondCard;
 let lockBoard = false;
 
-// Create cards
-cardsArray.forEach(imgName => {
+// Shuffle cards
+cards.sort(() => 0.5 - Math.random());
+
+cards.forEach(src => {
     const card = document.createElement('div');
     card.classList.add('card');
-
-    const img = document.createElement('img');
-    img.src = `assets/${imgName}`;
-
-    card.appendChild(img);
-    card.addEventListener('click', flipCard);
-
+    card.innerHTML = `<img src="${src}" alt="card image">`;
     gameBoard.appendChild(card);
+
+    card.addEventListener('click', () => {
+        if (lockBoard || card.classList.contains('flipped')) return;
+
+        card.classList.add('flipped');
+
+        if (!firstCard) {
+            firstCard = card;
+        } else {
+            secondCard = card;
+            checkMatch();
+        }
+    });
 });
 
-function flipCard() {
-    if (lockBoard || this.classList.contains('flipped')) return;
-
-    this.classList.add('flipped');
-
-    if (!firstCard) {
-        firstCard = this;
-        return;
-    }
-
-    secondCard = this;
-    checkForMatch();
-}
-
-function checkForMatch() {
-    const isMatch = firstCard.querySelector('img').src === secondCard.querySelector('img').src;
+function checkMatch() {
+    const isMatch = firstCard.innerHTML === secondCard.innerHTML;
 
     if (isMatch) {
         disableCards();
@@ -55,17 +50,14 @@ function checkForMatch() {
 function disableCards() {
     firstCard.removeEventListener('click', flipCard);
     secondCard.removeEventListener('click', flipCard);
-
     resetBoard();
 }
 
 function unflipCards() {
     lockBoard = true;
-
     setTimeout(() => {
         firstCard.classList.remove('flipped');
         secondCard.classList.remove('flipped');
-
         resetBoard();
     }, 1000);
 }
