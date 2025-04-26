@@ -1,35 +1,42 @@
 body {
   margin: 0;
-  height: 100vh;
-  background: linear-gradient(to bottom right, #a8e0ff, #e0f7ff);
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  padding: 20px;
+  background: linear-gradient(to bottom right, #a1c4fd, #c2e9fb);
+  font-family: 'Arial', sans-serif;
+  text-align: center;
+}
+
+.title {
+  font-size: 2em;
+  margin-bottom: 20px;
+  color: #333;
 }
 
 .grid {
   display: grid;
   grid-template-columns: repeat(3, 100px);
-  grid-gap: 20px;
+  gap: 20px;
+  justify-content: center;
+  margin-bottom: 40px;
 }
 
-.box {
+.kotak {
   width: 100px;
   height: 100px;
-  background: white;
-  border-radius: 15px;
+  background-color: #fff;
+  border-radius: 16px;
   box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 24px;
-  font-weight: bold;
-  color: transparent;
-  cursor: pointer;
-  transition: 0.3s;
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.2s;
 }
 
-.box.marked {
-  background: #2196f3;
-  color: white;
+.kotak:hover {
+  transform: scale(1.05);
+}
+
+footer {
+  margin-top: 40px;
+  font-size: 0.9em;
+  color: #555;
 }
